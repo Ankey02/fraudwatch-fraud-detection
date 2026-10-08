@@ -15,5 +15,16 @@ services:
       timeout: 5s
       retries: 10
 
+  api:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      ConnectionStrings__Default: "Host=db;Port=5432;Database=fraudwatch;Username=fraud;Password=fraud_pw"
+      ASPNETCORE_ENVIRONMENT: Development   # demo only: enables /demo/seed and the API docs
+    ports:
+      - "5100:8080"
+
 volumes:
   fraud_pgdata:
