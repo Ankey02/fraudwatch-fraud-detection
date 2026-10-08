@@ -1,0 +1,19 @@
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: fraud
+      POSTGRES_PASSWORD: fraud_pw
+      POSTGRES_DB: fraudwatch
+    ports:
+      - "5435:5432"
+    volumes:
+      - fraud_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fraud -d fraudwatch"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  fraud_pgdata:
