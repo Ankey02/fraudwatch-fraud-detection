@@ -18,6 +18,10 @@ await app.Services.GetRequiredService<Db>().EnsureSchemaAsync();
 
 app.UseExceptionHandler();
 
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
+
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();

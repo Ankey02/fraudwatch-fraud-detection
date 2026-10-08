@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FraudWatch Dashboard</title>
+<style>
+  :root { --bg:#0f1115; --card:#181b22; --line:#2a2f3a; --text:#e8eaf0; --muted:#8b93a7; --accent:#4f8cff; }
+  @media (prefers-color-scheme: light) {
+    :root { --bg:#f4f6fa; --card:#ffffff; --line:#dde2ec; --text:#1b2030; --muted:#5d6678; --accent:#2f6fed; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; padding:24px; background:var(--bg); color:var(--text); font:15px/1.5 -apple-system, system-ui, sans-serif; }
+  header { display:flex; flex-wrap:wrap; gap:12px; align-items:center; justify-content:space-between; margin-bottom:20px; }
+  h1 { margin:0; font-size:22px; }
+  h2 { margin:0 0 12px; font-size:16px; }
+  button { background:var(--accent); color:#fff; border:0; border-radius:8px; padding:8px 14px; font-size:14px; cursor:pointer; margin-left:6px; }
+  button.secondary { background:transparent; color:var(--text); border:1px solid var(--line); }
+  #status { color:var(--muted); font-size:13px; margin-bottom:16px; }
+  #status.error { color:#ff6b6b; }
+  .kpis { display:grid; grid-template-columns:repeat(auto-fit, minmax(170px, 1fr)); gap:12px; margin-bottom:16px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px; }
+  .kpi .label { color:var(--muted); font-size:13px; }
+  .kpi .value { font-size:26px; font-weight:600; }
+  .grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(420px, 1fr)); gap:12px; }
+  .wide { grid-column: 1 / -1; }
+  table { width:100%; border-collapse:collapse; font-size:14px; }
+  th { text-align:left; color:var(--muted); font-weight:500; padding:6px 8px; border-bottom:1px solid var(--line); }
+  td { padding:6px 8px; border-bottom:1px solid var(--line); vertical-align:middle; }
+  .bar { background:var(--line); border-radius:4px; height:8px; min-width:80px; }
+  .bar div { background:var(--accent); height:100%; border-radius:4px; }
+  .badge { padding:2px 8px; border-radius:999px; font-size:12px; font-weight:600; }
+  .sev1 { background:#2d7a4b33; color:#4cc27f; }
+  .sev2 { background:#b8860b33; color:#e0a800; }
+  .sev3 { background:#c0392b33; color:#ff6b6b; }
+</style>
+</head>
+<body>
+<header>
+  <h1>FraudWatch Dashboard</h1>
+  <div>
+    <button id="btnSeed">Seed demo data + scan</button>
+    <button id="btnScan" class="secondary">Run scan</button>
+    <button id="btnRefresh" class="secondary">Refresh</button>
+  </div>
+</header>
+<div id="status">Loading...</div>
+
+<section class="kpis">
+  <div class="card kpi"><div class="label">Transactions (30 days)</div><div class="value" id="kpiTx">-</div></div>
+  <div class="card kpi"><div class="label">Approved volume</div><div class="value" id="kpiVol">-</div></div>
+  <div class="card kpi"><div class="label">Decline rate</div><div class="value" id="kpiDecl">-</div></div>
+  <div class="card kpi"><div class="label">Fraud alerts</div><div class="value" id="kpiAlerts">-</div></div>
+  <div class="card kpi"><div class="label">Flagged cards</div><div class="value" id="kpiCards">-</div></div>
+</section>
+
+<section class="grid">
+  <div class="card">
+    <h2>Alerts by rule</h2>
+    <table><thead><tr><th>Rule</th><th>Severity</th><th>Count</th><th></th></tr></thead><tbody id="rules"></tbody></table>
+  </div>
+  <div class="card">
+    <h2>Top risk cards</h2>
+    <table><thead><tr><th>Rank</th><th>Card</th><th>Alerts</th><th>Score</th><th>Rules</th></tr></thead><tbody id="risk"></tbody></table>
+  </div>
+  <div class="card wide">
+    <h2>Daily volume (last 14 days)</h2>
+    <table><thead><tr><th>Day</th><th>Txns</th><th>Declined</th><th>Volume</th><th>7-day avg</th><th></th></tr></thead><tbody id="daily"></tbody></table>
+  </div>
+  <div class="card wide">
+    <h2>Latest alerts</h2>
+    <table><thead><tr><th>Severity</th><th>Rule</th><th>Card</th><th>Amount</th><th>Detail</th></tr></thead><tbody id="alerts"></tbody></table>
+  </div>
+</section>
+<script src="app.js"></script>
+</body>
+</html>
